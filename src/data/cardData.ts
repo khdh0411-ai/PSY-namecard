@@ -22,10 +22,19 @@ export interface ActionLink {
   category: 'clinic' | 'company' | 'media';
 }
 
+export interface BranchItem {
+  name: string;
+  note: string;
+  naverMapUrl: string;
+  // Tailwind position classes aligned to public/assets/seoul_map_illustration.png (460x370)
+  hotspotClass: string;
+}
+
 export const COMMON_PERSON = {
   name: '박상용',
   englishBrand: 'KYUNGHEE DONGHAENG',
   mobile: '010-5686-3735',
+  constitutionTestUrl: 'https://charoitda.com/constitution-test',
 };
 
 export const CONTACT_PROFILES: Record<'clinic' | 'company', ContactProfile> = {
@@ -63,18 +72,11 @@ export const CONTACT_PROFILES: Record<'clinic' | 'company', ContactProfile> = {
 
 export const ACTION_LINKS: ActionLink[] = [
   {
-    id: 'clinic-home',
-    label: '한의원 홈페이지',
-    sublabel: 'khdhhani1.com',
-    href: 'http://khdhhani1.com',
-    category: 'clinic',
-  },
-  {
-    id: 'naver-booking',
-    label: '네이버 예약하기',
-    sublabel: 'hani.care/5zKGjTywXk',
-    href: 'https://hani.care/5zKGjTywXk',
-    category: 'clinic',
+    id: 'youtube-channel',
+    label: '유튜브 양허인간',
+    sublabel: 'youtube.com/@YH-HUMAN',
+    href: 'https://www.youtube.com/@YH-HUMAN',
+    category: 'media',
   },
   {
     id: 'charoitda-home',
@@ -84,11 +86,18 @@ export const ACTION_LINKS: ActionLink[] = [
     category: 'company',
   },
   {
-    id: 'youtube-channel',
-    label: '유튜브 양허인간',
-    sublabel: 'youtube.com/@YH-HUMAN',
-    href: 'https://www.youtube.com/@YH-HUMAN',
-    category: 'media',
+    id: 'naver-booking',
+    label: '네이버 진료예약',
+    sublabel: 'hani.care/5zKGjTywXk',
+    href: 'https://hani.care/5zKGjTywXk',
+    category: 'clinic',
+  },
+  {
+    id: 'clinic-home',
+    label: '한의원 홈페이지',
+    sublabel: 'khdhhani1.com',
+    href: 'http://khdhhani1.com',
+    category: 'clinic',
   },
 ];
 
@@ -103,28 +112,29 @@ export const DIRECTOR_HOURS = [
   { label: '토', time: '09:30~15:30' },
 ];
 
-export const BRANCHES = [
-  { name: '중랑점', note: '서울 중랑구' },
-  { name: '사당점', note: '서울 사당 권역' },
-  { name: '수유점', note: '서울 강북구' },
-  { name: '압구정점', note: '서울 강남구' },
-];
-
-export const CARD_IMAGES = [
+export const BRANCHES: BranchItem[] = [
   {
-    id: 'clinic-card',
-    title: '경희동행한의원 명함',
-    subtitle: '밝은 아이보리 디자인 · 대표원장',
-    src: '/assets/aistudio/clinic_90x50_v3_0f7b40f8.png',
-    downloadName: '박상용_경희동행한의원_명함.png',
-    surface: 'light' as const,
+    name: '중랑점',
+    note: '서울 중랑구',
+    naverMapUrl: 'https://map.naver.com/p/search/%EA%B2%BD%ED%9D%AC%EB%8F%99%ED%96%89%ED%95%9C%EC%9D%98%EC%9B%90%20%EC%A4%91%EB%9E%91%EC%A0%90',
+    hotspotClass: 'left-[78%] top-[43%] w-24 h-14',
   },
   {
-    id: 'company-card',
-    title: '주식회사 경희동행 명함',
-    subtitle: '짙은 브라운 디자인 · CEO',
-    src: '/assets/aistudio/company_90x50_final_ce2e9ef0.png',
-    downloadName: '박상용_주식회사경희동행_명함.png',
-    surface: 'dark' as const,
+    name: '사당점',
+    note: '서울 사당 권역',
+    naverMapUrl: 'https://map.naver.com/p/search/%EA%B2%BD%ED%9D%AC%EB%8F%99%ED%96%89%ED%95%9C%EC%9D%98%EC%9B%90%20%EC%82%AC%EB%8B%B9%EC%A0%90',
+    hotspotClass: 'left-[47%] top-[81%] w-24 h-14',
+  },
+  {
+    name: '수유점',
+    note: '서울 강북구',
+    naverMapUrl: 'https://map.naver.com/p/search/%EA%B2%BD%ED%9D%AC%EB%8F%99%ED%96%89%ED%95%9C%EC%9D%98%EC%9B%90%20%EC%88%98%EC%9C%A0%EC%A0%90',
+    hotspotClass: 'left-[58%] top-[24%] w-24 h-14',
+  },
+  {
+    name: '압구정점',
+    note: '서울 강남구',
+    naverMapUrl: 'https://map.naver.com/p/search/%EA%B2%BD%ED%9D%AC%EB%8F%99%ED%96%89%ED%95%9C%EC%9D%98%EC%9B%90%20%EC%95%95%EA%B5%AC%EC%A0%95%EC%A0%90',
+    hotspotClass: 'left-[69%] top-[62%] w-28 h-14',
   },
 ];

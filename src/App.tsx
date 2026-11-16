@@ -4,24 +4,21 @@ import {
   CalendarCheck,
   Check,
   ChevronRight,
+  ClipboardCheck,
   Coffee,
-  Download,
+  ExternalLink,
   Home,
-  Mail,
   MapPin,
-  Maximize2,
   MessageSquare,
   Phone,
   Play,
   Share2,
   UserPlus,
 } from 'lucide-react';
-import { CardImageModal } from './components/CardImageModal';
 import { ContactSaveModal } from './components/ContactSaveModal';
 import {
   ACTION_LINKS,
   BRANCHES,
-  CARD_IMAGES,
   CLINIC_HOURS,
   COMMON_PERSON,
   CONTACT_PROFILES,
@@ -33,9 +30,6 @@ export default function App() {
   const [contactModalOpen, setContactModalOpen] = useState(false);
   const [initialContactId, setInitialContactId] = useState<
     'clinic' | 'company' | null
-  >(null);
-  const [previewCard, setPreviewCard] = useState<
-    (typeof CARD_IMAGES)[number] | null
   >(null);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
   const [logoFailed, setLogoFailed] = useState(false);
@@ -78,8 +72,6 @@ export default function App() {
     }
   };
 
-  const activeProfile = CONTACT_PROFILES[activeTab];
-
   const renderLinkBadge = (id: string) => {
     switch (id) {
       case 'clinic-home':
@@ -120,7 +112,7 @@ export default function App() {
       <div className="mx-auto max-w-5xl lg:px-6 lg:py-8">
         <div className="grid grid-cols-1 gap-6 lg:grid-cols-12 lg:items-start lg:gap-8">
           {/* LEFT / MOBILE TOP COLUMN: Curved Espresso Hero + Segmented Switch + Profile Details */}
-          <div className="lg:col-span-5 space-y-5">
+          <div className="space-y-5 lg:col-span-5">
             {/* Curved Dark Espresso Header Card */}
             <section
               aria-labelledby="hero-name"
@@ -156,7 +148,7 @@ export default function App() {
                 <p>주식회사 경희동행 CEO</p>
               </div>
 
-              {/* 4 Quick Touch Tiles: 전화 · 문자 · 메일 · 공유 */}
+              {/* 4 Quick Touch Tiles: 전화 · 문자 · 체질검사 · 공유 */}
               <div className="mt-5 grid grid-cols-4 gap-2.5">
                 <a
                   href={`tel:${COMMON_PERSON.mobile}`}
@@ -177,12 +169,14 @@ export default function App() {
                   </span>
                 </a>
                 <a
-                  href={`mailto:${activeProfile.email}`}
+                  href={COMMON_PERSON.constitutionTestUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="flex min-h-[60px] flex-col items-center justify-center gap-1 rounded-2xl bg-white/10 px-2 py-2.5 text-white transition-colors hover:bg-white/18 active:scale-[0.98]"
                 >
-                  <Mail className="h-[18px] w-[18px] text-[#E0BEA8]" />
-                  <span className="text-[11px] font-medium text-[#F5EFE9]">
-                    메일
+                  <ClipboardCheck className="h-[18px] w-[18px] text-[#E0BEA8]" />
+                  <span className="whitespace-nowrap text-[11px] font-medium text-[#F5EFE9]">
+                    체질검사
                   </span>
                 </a>
                 <button
@@ -245,7 +239,7 @@ export default function App() {
 
               {activeTab === 'clinic' ? (
                 <div role="tabpanel" className="space-y-4">
-                  {/* CLINIC CARD */}
+                  {/* CLINIC CARD (Address, Office Tel, Email — no personal number) */}
                   <section className="rounded-3xl bg-white p-5 shadow-xs sm:p-6">
                     <p className="text-[11px] font-bold tracking-[0.14em] text-[#8C6B54]">
                       CLINIC
@@ -253,17 +247,48 @@ export default function App() {
                     <h2 className="mt-1 text-xl font-bold text-[#292420]">
                       경희동행한의원
                     </h2>
-                    <p className="mt-2 text-sm leading-relaxed text-[#5A4D46]">
+                    <p className="mt-1.5 text-sm leading-relaxed text-[#5A4D46]">
                       박상용 대표원장 진료. 예약 후 방문하시면 보다 원활하게
                       진료받으실 수 있습니다.
                     </p>
-                    <div className="mt-3 space-y-1 text-xs text-[#6B5B53]">
-                      <p>{CONTACT_PROFILES.clinic.address}</p>
-                      <p className="tabular-nums">
-                        개인번호 {COMMON_PERSON.mobile} · 대표전화{' '}
-                        {CONTACT_PROFILES.clinic.tel}
-                      </p>
-                    </div>
+
+                    <dl className="mt-4 divide-y divide-[#755A50]/12 border-t border-[#755A50]/12 text-sm">
+                      <div className="flex items-start justify-between gap-4 py-2.5">
+                        <dt className="shrink-0 text-xs font-medium text-[#755A50]">
+                          주소
+                        </dt>
+                        <dd className="text-right text-[13px] font-medium leading-snug text-[#292420]">
+                          {CONTACT_PROFILES.clinic.address}
+                        </dd>
+                      </div>
+                      <div className="flex items-center justify-between gap-3 py-2.5">
+                        <dt className="shrink-0 text-xs font-medium text-[#755A50]">
+                          대표전화
+                        </dt>
+                        <dd className="tabular-nums font-bold text-[#292420]">
+                          <a
+                            href={`tel:${CONTACT_PROFILES.clinic.tel}`}
+                            className="hover:underline"
+                          >
+                            {CONTACT_PROFILES.clinic.tel}
+                          </a>
+                        </dd>
+                      </div>
+                      <div className="flex items-center justify-between gap-3 py-2.5">
+                        <dt className="shrink-0 text-xs font-medium text-[#755A50]">
+                          이메일
+                        </dt>
+                        <dd className="font-medium text-[#292420]">
+                          <a
+                            href={`mailto:${CONTACT_PROFILES.clinic.email}`}
+                            className="hover:underline"
+                          >
+                            {CONTACT_PROFILES.clinic.email}
+                          </a>
+                        </dd>
+                      </div>
+                    </dl>
+
                     <div className="mt-4 grid grid-cols-2 gap-2.5">
                       <a
                         href="https://hani.care/5zKGjTywXk"
@@ -340,7 +365,7 @@ export default function App() {
                 </div>
               ) : (
                 <div role="tabpanel" className="space-y-4">
-                  {/* COMPANY CARD */}
+                  {/* COMPANY CARD (Address, Office Tel, Email — no personal number) */}
                   <section className="rounded-3xl bg-white p-5 shadow-xs sm:p-6">
                     <p className="text-[11px] font-bold tracking-[0.14em] text-[#8C6B54]">
                       COMPANY
@@ -348,10 +373,48 @@ export default function App() {
                     <h2 className="mt-1 text-xl font-bold text-[#292420]">
                       주식회사 경희동행
                     </h2>
-                    <p className="mt-2 text-sm leading-relaxed text-[#5A4D46]">
+                    <p className="mt-1.5 text-sm leading-relaxed text-[#5A4D46]">
                       경희동행 브랜드와 차로잇다 등 건강한 동행을 이어가는
                       주식회사 경희동행입니다.
                     </p>
+
+                    <dl className="mt-4 divide-y divide-[#755A50]/12 border-t border-[#755A50]/12 text-sm">
+                      <div className="flex items-start justify-between gap-4 py-2.5">
+                        <dt className="shrink-0 text-xs font-medium text-[#755A50]">
+                          주소
+                        </dt>
+                        <dd className="text-right text-[13px] font-medium leading-snug text-[#292420]">
+                          {CONTACT_PROFILES.company.address}
+                        </dd>
+                      </div>
+                      <div className="flex items-center justify-between gap-3 py-2.5">
+                        <dt className="shrink-0 text-xs font-medium text-[#755A50]">
+                          대표전화
+                        </dt>
+                        <dd className="tabular-nums font-bold text-[#292420]">
+                          <a
+                            href={`tel:${CONTACT_PROFILES.company.tel}`}
+                            className="hover:underline"
+                          >
+                            {CONTACT_PROFILES.company.tel}
+                          </a>
+                        </dd>
+                      </div>
+                      <div className="flex items-center justify-between gap-3 py-2.5">
+                        <dt className="shrink-0 text-xs font-medium text-[#755A50]">
+                          이메일
+                        </dt>
+                        <dd className="font-medium text-[#292420]">
+                          <a
+                            href={`mailto:${CONTACT_PROFILES.company.email}`}
+                            className="hover:underline"
+                          >
+                            {CONTACT_PROFILES.company.email}
+                          </a>
+                        </dd>
+                      </div>
+                    </dl>
+
                     <div className="mt-4 grid grid-cols-2 gap-2.5">
                       <a
                         href="http://charoitda.com"
@@ -372,44 +435,40 @@ export default function App() {
                     </div>
                   </section>
 
-                  {/* CONTACT DETAILS CARD */}
+                  {/* BUSINESS INFO CARD */}
                   <section className="rounded-3xl bg-white p-5 shadow-xs sm:p-6">
                     <p className="text-[11px] font-bold tracking-[0.14em] text-[#8C6B54]">
-                      CONTACT
+                      INFO
                     </p>
                     <dl className="mt-2 divide-y divide-[#755A50]/12 text-sm">
-                      <div className="flex items-center justify-between gap-3 py-3">
+                      <div className="flex items-center justify-between gap-3 py-2.5">
                         <dt className="text-[#5A4D46]">직함</dt>
                         <dd className="font-bold text-[#292420]">CEO</dd>
                       </div>
-                      <div className="flex items-center justify-between gap-3 py-3">
-                        <dt className="text-[#5A4D46]">개인 휴대전화</dt>
-                        <dd className="tabular-nums font-bold text-[#292420]">
-                          <a href={`tel:${COMMON_PERSON.mobile}`}>
-                            {COMMON_PERSON.mobile}
+                      <div className="flex items-center justify-between gap-3 py-2.5">
+                        <dt className="text-[#5A4D46]">차로잇다 홈페이지</dt>
+                        <dd className="font-semibold text-[#292420]">
+                          <a
+                            href="http://charoitda.com"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="hover:underline"
+                          >
+                            charoitda.com
                           </a>
                         </dd>
                       </div>
-                      <div className="flex items-center justify-between gap-3 py-3">
-                        <dt className="text-[#5A4D46]">대표전화</dt>
-                        <dd className="tabular-nums font-bold text-[#292420]">
-                          <a href={`tel:${CONTACT_PROFILES.company.tel}`}>
-                            {CONTACT_PROFILES.company.tel}
+                      <div className="flex items-center justify-between gap-3 py-2.5">
+                        <dt className="text-[#5A4D46]">체질검사</dt>
+                        <dd className="font-semibold text-[#292420]">
+                          <a
+                            href={COMMON_PERSON.constitutionTestUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="hover:underline"
+                          >
+                            바로가기
                           </a>
-                        </dd>
-                      </div>
-                      <div className="flex items-center justify-between gap-3 py-3">
-                        <dt className="text-[#5A4D46]">이메일</dt>
-                        <dd className="font-bold text-[#292420]">
-                          <a href={`mailto:${CONTACT_PROFILES.company.email}`}>
-                            {CONTACT_PROFILES.company.email}
-                          </a>
-                        </dd>
-                      </div>
-                      <div className="flex items-start justify-between gap-4 py-3">
-                        <dt className="shrink-0 text-[#5A4D46]">주소</dt>
-                        <dd className="text-right text-[13px] font-semibold leading-snug text-[#292420]">
-                          {CONTACT_PROFILES.company.address}
                         </dd>
                       </div>
                     </dl>
@@ -419,9 +478,9 @@ export default function App() {
             </div>
           </div>
 
-          {/* RIGHT / MOBILE LOWER COLUMN: 바로가기 + 지점 안내 + 실물 명함 이미지 */}
+          {/* RIGHT / MOBILE LOWER COLUMN: 바로가기 + 지점 안내 (Interactive Naver Map) */}
           <div className="space-y-6 px-4 pb-10 lg:col-span-7 lg:px-0 lg:pb-0">
-            {/* 바로가기: 4 Primary Destination Links */}
+            {/* 바로가기: 5 Primary Destination Links */}
             <section aria-labelledby="quick-links-heading">
               <h2
                 id="quick-links-heading"
@@ -455,7 +514,7 @@ export default function App() {
               </div>
             </section>
 
-            {/* 지점 안내 + 서울 지도 일러스트 */}
+            {/* 지점 안내 + 클릭 가능한 서울 지도 일러스트 */}
             <section
               id="branches"
               className="rounded-3xl bg-[#342C29] p-5 text-[#F8F6F2] shadow-xs sm:p-6"
@@ -468,133 +527,69 @@ export default function App() {
                   </h2>
                 </div>
                 <span className="text-xs font-medium text-[#D9B694]">
-                  서울 4개 지점
+                  지점 클릭 시 네이버지도 이동
                 </span>
               </div>
 
               <div className="mt-4 flex items-center justify-center">
                 {!mapFailed ? (
-                  <img
-                    src="/assets/seoul_map_illustration.png"
-                    alt="경희동행한의원 서울 지점 위치 일러스트 (수유점, 중랑점, 압구정점, 사당점)"
-                    referrerPolicy="no-referrer"
-                    onError={() => setMapFailed(true)}
-                    className="aspect-[460/370] w-full max-w-[300px] object-contain"
-                  />
+                  <div className="relative aspect-[460/370] w-full max-w-[320px]">
+                    <img
+                      src="/assets/seoul_map_illustration.png"
+                      alt="경희동행한의원 서울 지점 위치 일러스트 (수유점, 중랑점, 압구정점, 사당점)"
+                      referrerPolicy="no-referrer"
+                      onError={() => setMapFailed(true)}
+                      className="h-full w-full object-contain"
+                    />
+                    {/* Interactive Naver Map Hotspots aligned to each branch dot & label */}
+                    {BRANCHES.map((branch) => (
+                      <a
+                        key={branch.name}
+                        href={branch.naverMapUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        aria-label={`경희동행한의원 ${branch.name} 네이버 지도 플레이스 열기`}
+                        title={`경희동행한의원 ${branch.name} 네이버 지도 보기`}
+                        className={`absolute flex -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full transition-colors hover:bg-[#D9B694]/18 active:bg-[#D9B694]/28 focus-visible:outline-2 focus-visible:outline-[#D9B694] ${branch.hotspotClass}`}
+                      >
+                        <span className="sr-only">
+                          {branch.name} 네이버 지도 보기
+                        </span>
+                      </a>
+                    ))}
+                  </div>
                 ) : (
-                  <div className="flex aspect-[460/370] w-full max-w-[300px] items-center justify-center rounded-2xl border border-white/15 text-sm text-[#D9B694]">
+                  <div className="flex aspect-[460/370] w-full max-w-[320px] items-center justify-center rounded-2xl border border-white/15 text-sm text-[#D9B694]">
                     서울 지점 일러스트 (중랑 · 사당 · 수유 · 압구정)
                   </div>
                 )}
               </div>
 
-              <div className="mt-4 grid grid-cols-2 gap-x-5 gap-y-2.5 border-t border-white/12 pt-4">
+              <div className="mt-4 grid grid-cols-2 gap-2.5 border-t border-white/12 pt-4">
                 {BRANCHES.map((branch) => (
-                  <div
+                  <a
                     key={branch.name}
-                    className="flex items-baseline justify-between border-b border-white/10 pb-2"
+                    href={branch.naverMapUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="group flex min-h-[48px] items-center justify-between gap-2 rounded-xl bg-white/8 px-3.5 py-2.5 transition-colors hover:bg-white/15 active:scale-[0.98]"
                   >
-                    <span className="text-sm font-bold text-white">
-                      {branch.name}
-                    </span>
-                    <span className="text-xs text-[#D9B694]">
-                      {branch.note}
-                    </span>
-                  </div>
+                    <div className="min-w-0">
+                      <div className="text-sm font-bold text-white">
+                        {branch.name}
+                      </div>
+                      <div className="text-[11px] text-[#D9B694]">
+                        {branch.note}
+                      </div>
+                    </div>
+                    <ExternalLink className="h-3.5 w-3.5 shrink-0 text-[#D9B694] transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                  </a>
                 ))}
               </div>
 
               <p className="mt-3.5 text-[11px] leading-relaxed text-[#E0BEA8]/85">
-                지도 표시는 대략적인 지역 표현이며, 실제 주소나 길 안내로
-                사용하지 않습니다.
-              </p>
-            </section>
-
-            {/* 실물 명함 이미지 저장 */}
-            <section id="cards" className="space-y-3">
-              <div className="px-1">
-                <h2 className="text-base font-bold text-[#292420]">
-                  명함 이미지 저장
-                </h2>
-                <p className="mt-1 text-xs leading-relaxed text-[#6B5B53]">
-                  아래 이미지는 저장용 실물 명함입니다. 이미지 속 홈페이지·예약·유튜브
-                  문구는 버튼이 아니므로 위쪽 ‘바로가기’를 이용해 주세요.
-                </p>
-              </div>
-
-              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                {CARD_IMAGES.map((card) => (
-                  <article
-                    key={card.id}
-                    className={`rounded-3xl p-4 shadow-xs ${
-                      card.surface === 'dark'
-                        ? 'bg-[#342C29] text-[#F8F6F2]'
-                        : 'bg-white text-[#292420]'
-                    }`}
-                  >
-                    <div className="mb-2.5 flex items-baseline justify-between gap-2">
-                      <h3 className="text-sm font-bold">{card.title}</h3>
-                      <span
-                        className={`text-[11px] ${
-                          card.surface === 'dark'
-                            ? 'text-[#D9B694]'
-                            : 'text-[#755A50]'
-                        }`}
-                      >
-                        {card.surface === 'dark' ? 'CEO' : '대표원장'}
-                      </span>
-                    </div>
-
-                    <button
-                      type="button"
-                      onClick={() => setPreviewCard(card)}
-                      aria-label={`${card.title} 크게 보기`}
-                      className="block aspect-[9/5] w-full overflow-hidden rounded-2xl border border-black/10"
-                    >
-                      <img
-                        src={card.src}
-                        alt={`${card.title} 앞면`}
-                        referrerPolicy="no-referrer"
-                        className="h-full w-full object-contain"
-                      />
-                    </button>
-
-                    <div className="mt-3 grid grid-cols-2 gap-2">
-                      <button
-                        type="button"
-                        onClick={() => setPreviewCard(card)}
-                        className={`flex min-h-[44px] items-center justify-center gap-1.5 rounded-xl px-3 py-2 text-xs font-semibold transition-colors ${
-                          card.surface === 'dark'
-                            ? 'bg-white/12 text-white hover:bg-white/20'
-                            : 'bg-[#F5F1EA] text-[#292420] hover:bg-[#EAE3D8]'
-                        }`}
-                      >
-                        <Maximize2 className="h-3.5 w-3.5" />
-                        <span>크게 보기</span>
-                      </button>
-                      <a
-                        href={card.src}
-                        download={card.downloadName}
-                        onClick={() =>
-                          showToast(`${card.title} 이미지를 저장합니다.`)
-                        }
-                        className={`flex min-h-[44px] items-center justify-center gap-1.5 rounded-xl px-3 py-2 text-xs font-bold transition-colors ${
-                          card.surface === 'dark'
-                            ? 'bg-[#D9B694] text-[#292420] hover:bg-[#e3c3a4]'
-                            : 'bg-[#342C29] text-white hover:bg-[#292420]'
-                        }`}
-                      >
-                        <Download className="h-3.5 w-3.5" />
-                        <span>이미지 저장</span>
-                      </a>
-                    </div>
-                  </article>
-                ))}
-              </div>
-
-              <p className="px-1 text-center text-[11px] text-[#75665C]">
-                아이폰·갤럭시에서는 명함 이미지를 길게 눌러 사진첩에 저장하실
-                수도 있습니다.
+                지도 표시는 대략적인 지역 표현이며, 실제 길 안내나 상세 위치는
+                각 지점을 눌러 네이버 지도에서 확인해 주세요.
               </p>
             </section>
           </div>
@@ -624,9 +619,6 @@ export default function App() {
         onClose={() => setContactModalOpen(false)}
         initialProfileId={initialContactId}
       />
-
-      {/* Full-Resolution Business Card Preview Modal */}
-      <CardImageModal card={previewCard} onClose={() => setPreviewCard(null)} />
     </div>
   );
 }
