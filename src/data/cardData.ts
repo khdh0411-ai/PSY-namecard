@@ -36,6 +36,7 @@ export const COMMON_PERSON = {
   mobile: '010-5686-3735',
   constitutionTestUrl: 'https://charoitda.com/constitution-test',
   youtubeUrl: 'https://www.youtube.com/@YH-HUMAN',
+  publicUrl: 'https://psy-card.vercel.app',
 };
 
 export const CONTACT_PROFILES: Record<'clinic' | 'company', ContactProfile> = {
