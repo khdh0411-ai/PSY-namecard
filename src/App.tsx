@@ -10,10 +10,8 @@ import {
   MessageSquare,
   Phone,
   Play,
-  QrCode,
   Share2,
 } from 'lucide-react';
-import { QrCodeModal } from './components/QrCodeModal';
 import {
   BRANCHES,
   CLINIC_HOURS,
@@ -24,7 +22,6 @@ import {
 
 export default function App() {
   const [activeTab, setActiveTab] = useState<'clinic' | 'company'>('clinic');
-  const [isQrOpen, setIsQrOpen] = useState(false);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
   const [logoFailed, setLogoFailed] = useState(false);
   const [mapFailed, setMapFailed] = useState(false);
@@ -70,17 +67,6 @@ export default function App() {
               aria-labelledby="hero-name"
               className="relative rounded-b-[2rem] bg-[#342C29] px-5 pt-7 pb-6 text-center text-white shadow-sm lg:rounded-[2rem] lg:px-7"
             >
-              {/* Top-Left QR Code Button */}
-              <button
-                type="button"
-                onClick={() => setIsQrOpen(true)}
-                aria-label="명함 QR코드 보기 및 저장"
-                className="absolute top-4 left-4 inline-flex min-h-[40px] items-center gap-1.5 rounded-xl bg-white/10 px-3 py-1.5 text-xs font-medium text-[#F5EFE9] transition-colors hover:bg-white/18 active:scale-[0.98] focus-visible:outline-2 focus-visible:outline-[#D9B694]"
-              >
-                <QrCode className="h-3.5 w-3.5 text-[#E0BEA8]" />
-                <span>QR</span>
-              </button>
-
               {/* Top-Right Share Button */}
               <button
                 type="button"
@@ -511,13 +497,6 @@ export default function App() {
           <p>QR코드로 바로 여는 박상용 디지털 명함 · 경희동행</p>
         </footer>
       </div>
-
-      {/* QR Code Modal */}
-      <QrCodeModal
-        isOpen={isQrOpen}
-        onClose={() => setIsQrOpen(false)}
-        url={COMMON_PERSON.publicUrl}
-      />
 
       {/* Toast Feedback */}
       {toastMessage && (
