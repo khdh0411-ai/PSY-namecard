@@ -3,12 +3,12 @@
 @layer base {
   :root {
     --font-sans: 'Noto Sans KR', 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Apple SD Gothic Neo', sans-serif;
-    --bg-ivory: #f8f6f2;
+    --bg-ivory: #f5f1ea;
     --bg-linen: #f2ede4;
     --ink-espresso: #292420;
     --surface-espresso: #342c29;
     --accent-walnut: #755a50;
-    --accent-latte: #e0bea8;
+    --accent-latte: #d9b694;
   }
 
   html {

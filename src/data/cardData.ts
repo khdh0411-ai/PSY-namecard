@@ -35,6 +35,7 @@ export const COMMON_PERSON = {
   englishBrand: 'KYUNGHEE DONGHAENG',
   mobile: '010-5686-3735',
   constitutionTestUrl: 'https://charoitda.com/constitution-test',
+  youtubeUrl: 'https://www.youtube.com/@YH-HUMAN',
 };
 
 export const CONTACT_PROFILES: Record<'clinic' | 'company', ContactProfile> = {
@@ -69,37 +70,6 @@ export const CONTACT_PROFILES: Record<'clinic' | 'company', ContactProfile> = {
     theme: 'dark',
   },
 };
-
-export const ACTION_LINKS: ActionLink[] = [
-  {
-    id: 'youtube-channel',
-    label: '유튜브 양허인간',
-    sublabel: 'youtube.com/@YH-HUMAN',
-    href: 'https://www.youtube.com/@YH-HUMAN',
-    category: 'media',
-  },
-  {
-    id: 'charoitda-home',
-    label: '차로잇다 홈페이지',
-    sublabel: 'charoitda.com',
-    href: 'http://charoitda.com',
-    category: 'company',
-  },
-  {
-    id: 'naver-booking',
-    label: '네이버 진료예약',
-    sublabel: 'hani.care/5zKGjTywXk',
-    href: 'https://hani.care/5zKGjTywXk',
-    category: 'clinic',
-  },
-  {
-    id: 'clinic-home',
-    label: '한의원 홈페이지',
-    sublabel: 'khdhhani1.com',
-    href: 'http://khdhhani1.com',
-    category: 'clinic',
-  },
-];
 
 export const CLINIC_HOURS = [
   { label: '평일', time: '09:30~20:30' },

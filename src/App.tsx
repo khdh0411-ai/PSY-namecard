@@ -1,9 +1,7 @@
 import { useState } from 'react';
 import {
-  ArrowUpRight,
   CalendarCheck,
   Check,
-  ChevronRight,
   ClipboardCheck,
   Coffee,
   ExternalLink,
@@ -13,11 +11,8 @@ import {
   Phone,
   Play,
   Share2,
-  UserPlus,
 } from 'lucide-react';
-import { ContactSaveModal } from './components/ContactSaveModal';
 import {
-  ACTION_LINKS,
   BRANCHES,
   CLINIC_HOURS,
   COMMON_PERSON,
@@ -27,10 +22,6 @@ import {
 
 export default function App() {
   const [activeTab, setActiveTab] = useState<'clinic' | 'company'>('clinic');
-  const [contactModalOpen, setContactModalOpen] = useState(false);
-  const [initialContactId, setInitialContactId] = useState<
-    'clinic' | 'company' | null
-  >(null);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
   const [logoFailed, setLogoFailed] = useState(false);
   const [mapFailed, setMapFailed] = useState(false);
@@ -40,13 +31,6 @@ export default function App() {
     window.setTimeout(() => {
       setToastMessage((prev) => (prev === message ? null : prev));
     }, 2600);
-  };
-
-  const openContactModal = (
-    preset: 'clinic' | 'company' | null = activeTab,
-  ) => {
-    setInitialContactId(preset);
-    setContactModalOpen(true);
   };
 
   const handleShare = async () => {
@@ -72,52 +56,28 @@ export default function App() {
     }
   };
 
-  const renderLinkBadge = (id: string) => {
-    switch (id) {
-      case 'clinic-home':
-        return (
-          <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-[#342C29] text-white">
-            <Home className="h-5 w-5" />
-          </span>
-        );
-      case 'naver-booking':
-        return (
-          <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-[#03C75A] text-lg font-extrabold text-white">
-            N
-          </span>
-        );
-      case 'charoitda-home':
-        return (
-          <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-[#755A50] text-white">
-            <Coffee className="h-5 w-5" />
-          </span>
-        );
-      case 'youtube-channel':
-        return (
-          <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-[#D9B694] text-[#292420]">
-            <Play className="h-5 w-5 fill-current" />
-          </span>
-        );
-      default:
-        return (
-          <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-[#755A50] text-white">
-            <ArrowUpRight className="h-5 w-5" />
-          </span>
-        );
-    }
-  };
-
   return (
     <div id="top" className="min-h-dvh bg-[#F5F1EA] text-[#292420]">
       <div className="mx-auto max-w-5xl lg:px-6 lg:py-8">
         <div className="grid grid-cols-1 gap-6 lg:grid-cols-12 lg:items-start lg:gap-8">
           {/* LEFT / MOBILE TOP COLUMN: Curved Espresso Hero + Segmented Switch + Profile Details */}
-          <div className="space-y-5 lg:col-span-5">
+          <div className="space-y-5 lg:col-span-6">
             {/* Curved Dark Espresso Header Card */}
             <section
               aria-labelledby="hero-name"
-              className="rounded-b-[2rem] bg-[#342C29] px-5 pt-7 pb-6 text-center text-white shadow-sm lg:rounded-[2rem] lg:px-7"
+              className="relative rounded-b-[2rem] bg-[#342C29] px-5 pt-7 pb-6 text-center text-white shadow-sm lg:rounded-[2rem] lg:px-7"
             >
+              {/* Top-Right Share Button */}
+              <button
+                type="button"
+                onClick={handleShare}
+                aria-label="명함 공유하기"
+                className="absolute top-4 right-4 inline-flex min-h-[40px] items-center gap-1.5 rounded-xl bg-white/10 px-3 py-1.5 text-xs font-medium text-[#F5EFE9] transition-colors hover:bg-white/18 active:scale-[0.98] focus-visible:outline-2 focus-visible:outline-[#D9B694]"
+              >
+                <Share2 className="h-3.5 w-3.5 text-[#E0BEA8]" />
+                <span>공유하기</span>
+              </button>
+
               {/* Circular Emblem Avatar */}
               <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-full border-2 border-[#D9B694] bg-[#F8F6F2] shadow-xs">
                 {!logoFailed ? (
@@ -148,11 +108,11 @@ export default function App() {
                 <p>주식회사 경희동행 CEO</p>
               </div>
 
-              {/* 4 Quick Touch Tiles: 전화 · 문자 · 체질검사 · 공유 */}
+              {/* 4 Main Action Tabs: 전화 · 문자 · 체질검사 · 유튜브 */}
               <div className="mt-5 grid grid-cols-4 gap-2.5">
                 <a
                   href={`tel:${COMMON_PERSON.mobile}`}
-                  className="flex min-h-[60px] flex-col items-center justify-center gap-1 rounded-2xl bg-white/10 px-2 py-2.5 text-white transition-colors hover:bg-white/18 active:scale-[0.98]"
+                  className="flex min-h-[62px] flex-col items-center justify-center gap-1 rounded-2xl bg-white/10 px-2 py-2.5 text-white transition-colors hover:bg-white/18 active:scale-[0.98]"
                 >
                   <Phone className="h-[18px] w-[18px] text-[#E0BEA8]" />
                   <span className="text-[11px] font-medium text-[#F5EFE9]">
@@ -161,7 +121,7 @@ export default function App() {
                 </a>
                 <a
                   href={`sms:${COMMON_PERSON.mobile}`}
-                  className="flex min-h-[60px] flex-col items-center justify-center gap-1 rounded-2xl bg-white/10 px-2 py-2.5 text-white transition-colors hover:bg-white/18 active:scale-[0.98]"
+                  className="flex min-h-[62px] flex-col items-center justify-center gap-1 rounded-2xl bg-white/10 px-2 py-2.5 text-white transition-colors hover:bg-white/18 active:scale-[0.98]"
                 >
                   <MessageSquare className="h-[18px] w-[18px] text-[#E0BEA8]" />
                   <span className="text-[11px] font-medium text-[#F5EFE9]">
@@ -172,34 +132,25 @@ export default function App() {
                   href={COMMON_PERSON.constitutionTestUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex min-h-[60px] flex-col items-center justify-center gap-1 rounded-2xl bg-white/10 px-2 py-2.5 text-white transition-colors hover:bg-white/18 active:scale-[0.98]"
+                  className="flex min-h-[62px] flex-col items-center justify-center gap-1 rounded-2xl bg-white/10 px-2 py-2.5 text-white transition-colors hover:bg-white/18 active:scale-[0.98]"
                 >
                   <ClipboardCheck className="h-[18px] w-[18px] text-[#E0BEA8]" />
                   <span className="whitespace-nowrap text-[11px] font-medium text-[#F5EFE9]">
                     체질검사
                   </span>
                 </a>
-                <button
-                  type="button"
-                  onClick={handleShare}
-                  className="flex min-h-[60px] flex-col items-center justify-center gap-1 rounded-2xl bg-white/10 px-2 py-2.5 text-white transition-colors hover:bg-white/18 active:scale-[0.98]"
+                <a
+                  href={COMMON_PERSON.youtubeUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex min-h-[62px] flex-col items-center justify-center gap-1 rounded-2xl bg-white/10 px-2 py-2.5 text-white transition-colors hover:bg-white/18 active:scale-[0.98]"
                 >
-                  <Share2 className="h-[18px] w-[18px] text-[#E0BEA8]" />
-                  <span className="text-[11px] font-medium text-[#F5EFE9]">
-                    공유
+                  <Play className="h-[18px] w-[18px] fill-current text-[#E0BEA8]" />
+                  <span className="whitespace-nowrap text-[11px] font-medium text-[#F5EFE9]">
+                    유튜브
                   </span>
-                </button>
+                </a>
               </div>
-
-              {/* Primary CTA: 연락처 저장하기 */}
-              <button
-                type="button"
-                onClick={() => openContactModal(activeTab)}
-                className="mt-4 flex min-h-[52px] w-full items-center justify-center gap-2 rounded-2xl bg-[#D9B694] px-5 py-3 text-[15px] font-bold text-[#292420] shadow-xs transition-all hover:bg-[#e3c3a4] active:scale-[0.99] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#F8F6F2]"
-              >
-                <UserPlus className="h-4.5 w-4.5" />
-                <span>연락처 저장하기</span>
-              </button>
             </section>
 
             {/* Segmented Tab Bar + Active Tab Cards */}
@@ -216,8 +167,8 @@ export default function App() {
                   onClick={() => setActiveTab('clinic')}
                   className={`min-h-[44px] rounded-xl px-3 py-2 text-sm transition-all ${
                     activeTab === 'clinic'
-                      ? 'bg-white font-bold text-[#292420] shadow-xs'
-                      : 'font-semibold text-[#75665C] hover:text-[#292420]'
+                      ? 'bg-[#053754] font-bold text-white shadow-xs'
+                      : 'font-semibold text-[#6F5E54] hover:text-[#053754]'
                   }`}
                 >
                   한의원 · 진료
@@ -229,8 +180,8 @@ export default function App() {
                   onClick={() => setActiveTab('company')}
                   className={`min-h-[44px] rounded-xl px-3 py-2 text-sm transition-all ${
                     activeTab === 'company'
-                      ? 'bg-white font-bold text-[#292420] shadow-xs'
-                      : 'font-semibold text-[#75665C] hover:text-[#292420]'
+                      ? 'bg-[#053754] font-bold text-white shadow-xs'
+                      : 'font-semibold text-[#6F5E54] hover:text-[#053754]'
                   }`}
                 >
                   회사 · 경영
@@ -239,13 +190,13 @@ export default function App() {
 
               {activeTab === 'clinic' ? (
                 <div role="tabpanel" className="space-y-4">
-                  {/* CLINIC CARD (Address, Office Tel, Email — no personal number) */}
+                  {/* CLINIC CARD */}
                   <section className="rounded-3xl bg-white p-5 shadow-xs sm:p-6">
-                    <p className="text-[11px] font-bold tracking-[0.14em] text-[#8C6B54]">
+                    <p className="text-[11px] font-bold tracking-[0.14em] text-[#053754]">
                       CLINIC
                     </p>
                     <h2 className="mt-1 text-xl font-bold text-[#292420]">
-                      경희동행한의원
+                      경희동행한의원 중랑
                     </h2>
                     <p className="mt-1.5 text-sm leading-relaxed text-[#5A4D46]">
                       박상용 대표원장 진료. 예약 후 방문하시면 보다 원활하게
@@ -253,6 +204,14 @@ export default function App() {
                     </p>
 
                     <dl className="mt-4 divide-y divide-[#755A50]/12 border-t border-[#755A50]/12 text-sm">
+                      <div className="flex items-center justify-between gap-3 py-2.5">
+                        <dt className="shrink-0 text-xs font-medium text-[#755A50]">
+                          직함
+                        </dt>
+                        <dd className="font-bold text-[#292420]">
+                          {CONTACT_PROFILES.clinic.title}
+                        </dd>
+                      </div>
                       <div className="flex items-start justify-between gap-4 py-2.5">
                         <dt className="shrink-0 text-xs font-medium text-[#755A50]">
                           주소
@@ -294,17 +253,19 @@ export default function App() {
                         href="https://hani.care/5zKGjTywXk"
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="flex min-h-[48px] items-center justify-center gap-1.5 rounded-xl bg-[#342C29] px-4 py-2.5 text-sm font-bold text-white transition-colors hover:bg-[#292420]"
+                        className="flex min-h-[48px] items-center justify-center gap-1.5 rounded-xl bg-[#053754] px-3 py-2.5 text-sm font-bold text-white transition-colors hover:bg-[#042B42]"
                       >
-                        <CalendarCheck className="h-4 w-4 text-[#D9B694]" />
-                        <span>진료 예약</span>
+                        <CalendarCheck className="h-4 w-4 shrink-0 text-[#D9B694]" />
+                        <span className="whitespace-nowrap">진료 예약</span>
                       </a>
                       <a
-                        href={`tel:${CONTACT_PROFILES.clinic.tel}`}
-                        className="flex min-h-[48px] items-center justify-center gap-1.5 rounded-xl bg-[#EFEAE1] px-4 py-2.5 text-sm font-bold text-[#292420] transition-colors hover:bg-[#e5ddd1]"
+                        href={CONTACT_PROFILES.clinic.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex min-h-[48px] items-center justify-center gap-1.5 rounded-xl bg-[#EFEAE1] px-3 py-2.5 text-sm font-bold text-[#292420] transition-colors hover:bg-[#e5ddd1]"
                       >
-                        <Phone className="h-4 w-4 text-[#755A50]" />
-                        <span>전화 걸기</span>
+                        <Home className="h-4 w-4 shrink-0 text-[#053754]" />
+                        <span className="whitespace-nowrap">한의원 홈페이지</span>
                       </a>
                     </div>
                   </section>
@@ -315,10 +276,10 @@ export default function App() {
                     className="rounded-3xl bg-white p-5 shadow-xs sm:p-6"
                   >
                     <div className="flex items-center justify-between gap-2">
-                      <p className="text-[11px] font-bold tracking-[0.14em] text-[#8C6B54]">
+                      <p className="text-[11px] font-bold tracking-[0.14em] text-[#053754]">
                         HOURS
                       </p>
-                      <span className="text-xs font-bold text-[#755A50]">
+                      <span className="text-xs font-bold text-[#053754]">
                         연중무휴 · 365일 진료
                       </span>
                     </div>
@@ -365,9 +326,9 @@ export default function App() {
                 </div>
               ) : (
                 <div role="tabpanel" className="space-y-4">
-                  {/* COMPANY CARD (Address, Office Tel, Email — no personal number) */}
+                  {/* COMPANY CARD */}
                   <section className="rounded-3xl bg-white p-5 shadow-xs sm:p-6">
-                    <p className="text-[11px] font-bold tracking-[0.14em] text-[#8C6B54]">
+                    <p className="text-[11px] font-bold tracking-[0.14em] text-[#053754]">
                       COMPANY
                     </p>
                     <h2 className="mt-1 text-xl font-bold text-[#292420]">
@@ -379,6 +340,14 @@ export default function App() {
                     </p>
 
                     <dl className="mt-4 divide-y divide-[#755A50]/12 border-t border-[#755A50]/12 text-sm">
+                      <div className="flex items-center justify-between gap-3 py-2.5">
+                        <dt className="shrink-0 text-xs font-medium text-[#755A50]">
+                          직함
+                        </dt>
+                        <dd className="font-bold text-[#292420]">
+                          {CONTACT_PROFILES.company.title}
+                        </dd>
+                      </div>
                       <div className="flex items-start justify-between gap-4 py-2.5">
                         <dt className="shrink-0 text-xs font-medium text-[#755A50]">
                           주소
@@ -417,104 +386,32 @@ export default function App() {
 
                     <div className="mt-4 grid grid-cols-2 gap-2.5">
                       <a
-                        href="http://charoitda.com"
+                        href={CONTACT_PROFILES.company.url}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="flex min-h-[48px] items-center justify-center gap-1.5 rounded-xl bg-[#342C29] px-4 py-2.5 text-sm font-bold text-white transition-colors hover:bg-[#292420]"
+                        className="flex min-h-[48px] items-center justify-center gap-1.5 rounded-xl bg-[#053754] px-3 py-2.5 text-sm font-bold text-white transition-colors hover:bg-[#042B42]"
                       >
-                        <Coffee className="h-4 w-4 text-[#D9B694]" />
-                        <span>차로잇다</span>
+                        <Coffee className="h-4 w-4 shrink-0 text-[#D9B694]" />
+                        <span className="whitespace-nowrap">차로잇다</span>
                       </a>
                       <a
-                        href={`tel:${CONTACT_PROFILES.company.tel}`}
-                        className="flex min-h-[48px] items-center justify-center gap-1.5 rounded-xl bg-[#EFEAE1] px-4 py-2.5 text-sm font-bold text-[#292420] transition-colors hover:bg-[#e5ddd1]"
+                        href={COMMON_PERSON.youtubeUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex min-h-[48px] items-center justify-center gap-1.5 rounded-xl bg-[#EFEAE1] px-3 py-2.5 text-sm font-bold text-[#292420] transition-colors hover:bg-[#e5ddd1]"
                       >
-                        <Phone className="h-4 w-4 text-[#755A50]" />
-                        <span>전화 걸기</span>
+                        <Play className="h-4 w-4 shrink-0 fill-current text-[#053754]" />
+                        <span className="whitespace-nowrap">유튜브 양허인간</span>
                       </a>
                     </div>
-                  </section>
-
-                  {/* BUSINESS INFO CARD */}
-                  <section className="rounded-3xl bg-white p-5 shadow-xs sm:p-6">
-                    <p className="text-[11px] font-bold tracking-[0.14em] text-[#8C6B54]">
-                      INFO
-                    </p>
-                    <dl className="mt-2 divide-y divide-[#755A50]/12 text-sm">
-                      <div className="flex items-center justify-between gap-3 py-2.5">
-                        <dt className="text-[#5A4D46]">직함</dt>
-                        <dd className="font-bold text-[#292420]">CEO</dd>
-                      </div>
-                      <div className="flex items-center justify-between gap-3 py-2.5">
-                        <dt className="text-[#5A4D46]">차로잇다 홈페이지</dt>
-                        <dd className="font-semibold text-[#292420]">
-                          <a
-                            href="http://charoitda.com"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="hover:underline"
-                          >
-                            charoitda.com
-                          </a>
-                        </dd>
-                      </div>
-                      <div className="flex items-center justify-between gap-3 py-2.5">
-                        <dt className="text-[#5A4D46]">체질검사</dt>
-                        <dd className="font-semibold text-[#292420]">
-                          <a
-                            href={COMMON_PERSON.constitutionTestUrl}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="hover:underline"
-                          >
-                            바로가기
-                          </a>
-                        </dd>
-                      </div>
-                    </dl>
                   </section>
                 </div>
               )}
             </div>
           </div>
 
-          {/* RIGHT / MOBILE LOWER COLUMN: 바로가기 + 지점 안내 (Interactive Naver Map) */}
-          <div className="space-y-6 px-4 pb-10 lg:col-span-7 lg:px-0 lg:pb-0">
-            {/* 바로가기: 5 Primary Destination Links */}
-            <section aria-labelledby="quick-links-heading">
-              <h2
-                id="quick-links-heading"
-                className="mb-3 px-1 text-base font-bold text-[#292420]"
-              >
-                바로가기
-              </h2>
-              <div className="space-y-2.5">
-                {ACTION_LINKS.map((item) => (
-                  <a
-                    key={item.id}
-                    href={item.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="group flex min-h-[68px] items-center justify-between gap-3 rounded-2xl bg-white px-4 py-3 shadow-xs transition-all hover:bg-[#FAF7F2] active:scale-[0.99] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#755A50]"
-                  >
-                    <div className="flex min-w-0 items-center gap-3.5">
-                      {renderLinkBadge(item.id)}
-                      <div className="min-w-0">
-                        <div className="truncate text-[15px] font-bold text-[#292420]">
-                          {item.label}
-                        </div>
-                        <div className="truncate text-xs text-[#6B5B53]">
-                          {item.sublabel}
-                        </div>
-                      </div>
-                    </div>
-                    <ChevronRight className="h-5 w-5 shrink-0 text-[#A19186] transition-transform group-hover:translate-x-0.5 group-hover:text-[#342C29]" />
-                  </a>
-                ))}
-              </div>
-            </section>
-
-            {/* 지점 안내 + 클릭 가능한 서울 지도 일러스트 */}
+          {/* RIGHT / MOBILE LOWER COLUMN: 지점 안내 (Interactive Naver Map) */}
+          <div className="px-4 pb-10 lg:col-span-6 lg:px-0 lg:pb-0">
             <section
               id="branches"
               className="rounded-3xl bg-[#342C29] p-5 text-[#F8F6F2] shadow-xs sm:p-6"
@@ -533,7 +430,7 @@ export default function App() {
 
               <div className="mt-4 flex items-center justify-center">
                 {!mapFailed ? (
-                  <div className="relative aspect-[460/370] w-full max-w-[320px]">
+                  <div className="relative aspect-[460/370] w-full max-w-[340px]">
                     <img
                       src="/assets/seoul_map_illustration.png"
                       alt="경희동행한의원 서울 지점 위치 일러스트 (수유점, 중랑점, 압구정점, 사당점)"
@@ -559,7 +456,7 @@ export default function App() {
                     ))}
                   </div>
                 ) : (
-                  <div className="flex aspect-[460/370] w-full max-w-[320px] items-center justify-center rounded-2xl border border-white/15 text-sm text-[#D9B694]">
+                  <div className="flex aspect-[460/370] w-full max-w-[340px] items-center justify-center rounded-2xl border border-white/15 text-sm text-[#D9B694]">
                     서울 지점 일러스트 (중랑 · 사당 · 수유 · 압구정)
                   </div>
                 )}
@@ -606,19 +503,12 @@ export default function App() {
         <div
           role="status"
           aria-live="polite"
-          className="fixed bottom-5 left-1/2 z-50 flex -translate-x-1/2 items-center gap-2 rounded-2xl bg-[#292420] px-4 py-3 text-xs font-semibold text-[#F8F6F2] shadow-lg"
+          className="fixed bottom-5 left-1/2 z-50 flex -translate-x-1/2 items-center gap-2 rounded-2xl bg-[#053754] px-4 py-3 text-xs font-semibold text-white shadow-lg"
         >
           <Check className="h-4 w-4 shrink-0 text-[#D9B694]" />
           <span className="whitespace-nowrap">{toastMessage}</span>
         </div>
       )}
-
-      {/* Contact Save Modal / Bottom Sheet */}
-      <ContactSaveModal
-        isOpen={contactModalOpen}
-        onClose={() => setContactModalOpen(false)}
-        initialProfileId={initialContactId}
-      />
     </div>
   );
 }
