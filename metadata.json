@@ -1,0 +1,6 @@
+{
+  "name": "박상용 디지털 명함 · 경희동행",
+  "description": "경희동행한의원 대표원장 · 주식회사 경희동행 CEO 박상용 모바일 디지털 명함",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
